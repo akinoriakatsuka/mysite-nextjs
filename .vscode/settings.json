@@ -14,5 +14,9 @@
     "[typescriptreact]": {
       "editor.formatOnSave": true,
       "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "css.lint.unknownAtRules": "ignore",
+    "cSpell.words": [
+      "frontmatter"
+    ]
   }
