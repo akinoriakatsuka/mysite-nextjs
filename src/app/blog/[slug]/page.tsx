@@ -1,26 +1,27 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkHtml from "remark-html";
+import ReactMarkdown from "react-markdown";
 import "./contents.css";
 
-export default async function BlogPost({ params }: { params: any }) {
+type Props = {
+  slug: string;
+};
+
+export default async function BlogPost({ params }: { params: Props }) {
   // URLのパラメータから該当するファイル名を取得 (今回は hello-world)
   const { slug } = params;
-  const filePath = path.join(process.cwd(), "src/app/blog/_contents", `${slug}.md`);
+  const filePath = path.join(
+    process.cwd(),
+    "src/app/blog/_contents",
+    `${slug}.md`
+  );
 
   // ファイルの中身を取得
   const fileContents = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(fileContents);
   const title = data.title; // 記事のタイトル
   const date = data.date; // 記事の日付
-  const processedContent = await unified()
-    .use(remarkParse)
-    .use(remarkHtml)
-    .process(content);
-  const contentHtml = processedContent.toString(); // 記事の本文をHTMLに変換
 
   return (
     <div className="px-6 py-0 lg:px-8 bg-blue-50">
@@ -33,10 +34,9 @@ export default async function BlogPost({ params }: { params: any }) {
             <time dateTime={date}>{date}</time>
           </div>
         </div>
-        <div
-          className="article bg-white px-4 py-6 rounded-lg sm:py-8 sm:px-10"
-          dangerouslySetInnerHTML={{ __html: contentHtml }}
-        ></div>
+        <div className="article bg-white px-4 py-6 rounded-lg sm:py-8 sm:px-10">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
       </div>
     </div>
   );
