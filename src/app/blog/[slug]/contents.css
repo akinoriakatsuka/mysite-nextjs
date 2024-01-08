@@ -1,32 +1,40 @@
-p {
+.article p {
     @apply mt-6 text-xl leading-8;
 }
 
-h1 {
+.article h1:first-child {
+    @apply mt-0 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl;
+}
+
+.article h1 {
     @apply mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl;
 }
 
-h2 {
+.article h2 {
     @apply mt-8 text-2xl font-bold tracking-tight text-gray-900;
 }
 
-h3 {
+.article h3 {
     @apply mt-6 text-xl font-bold tracking-tight text-gray-900;
 }
 
-h4 {
+.article h4 {
     @apply mt-6 text-lg font-bold tracking-tight text-gray-900;
 }
 
-ul,
-ol {
+.article ul,
+.article ol {
     @apply mt-6 list-disc ml-8;
 }
 
-li {
+.article li {
     @apply mt-2;
 }
 
-a {
+.article a {
     @apply text-indigo-600;
+}
+
+.article pre {
+    @apply bg-slate-800 text-white my-6 overflow-auto text-base rounded-md p-4;
 }
