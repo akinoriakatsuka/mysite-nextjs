@@ -2,10 +2,48 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import ReactMarkdown from "react-markdown";
+import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
+import type { ClassAttributes, HTMLAttributes } from "react";
+import type { ExtraProps } from "react-markdown";
+import { tomorrowNightBlue } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import "./contents.css";
 
 type Props = {
   slug: string;
+};
+
+const Pre = ({
+  children,
+  ...props
+}: ClassAttributes<HTMLPreElement> &
+  HTMLAttributes<HTMLPreElement> &
+  ExtraProps) => {
+  if (!children || typeof children !== "object") {
+    return <code {...props}>{children}</code>;
+  }
+  const childType = "type" in children ? children.type : "";
+  if (childType !== "code") {
+    return <code {...props}>{children}</code>;
+  }
+
+  const childProps = "props" in children ? children.props : {};
+  const { className, children: code } = childProps;
+  const classList = className ? className.split(':') : []
+  const language = classList[0]?.replace('language-', '')
+  const fileName = classList[1]
+
+  return (
+      <div className="pt-6">
+        {fileName && (
+          <div className="rounded-t-lg text-gray-100 bg-slate-700 p-2">
+            <span>{fileName}</span>
+          </div>
+        )}
+        <SyntaxHighlighter language={language} style={tomorrowNightBlue}>
+          {String(code).replace(/\n$/, '')}
+        </SyntaxHighlighter>
+      </div>
+  );
 };
 
 export default async function BlogPost({ params }: { params: Props }) {
@@ -24,7 +62,7 @@ export default async function BlogPost({ params }: { params: Props }) {
   const date = data.date; // 記事の日付
 
   return (
-    <div className="px-6 py-0 lg:px-8 bg-blue-50">
+    <div className="px-6 py-0 lg:px-8 bg-sky-50">
       <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700 pb-4">
         <div className="px-6 py-6">
           <h1 className="mt-0 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -35,7 +73,13 @@ export default async function BlogPost({ params }: { params: Props }) {
           </div>
         </div>
         <div className="article bg-white px-4 py-6 rounded-lg sm:py-8 sm:px-10">
-          <ReactMarkdown>{content}</ReactMarkdown>
+          <ReactMarkdown
+            components={{
+              pre: Pre,
+            }}
+          >
+            {content}
+          </ReactMarkdown>
         </div>
       </div>
     </div>
