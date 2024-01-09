@@ -36,5 +36,9 @@
 }
 
 .article pre {
-    @apply bg-slate-800 text-white my-6 overflow-auto text-base rounded-md p-4;
+    @apply rounded-md;
+}
+
+.article .pre-wrapper-has-filename pre {
+    @apply rounded-tl-none;
 }

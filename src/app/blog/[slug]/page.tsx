@@ -28,22 +28,34 @@ const Pre = ({
 
   const childProps = "props" in children ? children.props : {};
   const { className, children: code } = childProps;
-  const classList = className ? className.split(':') : []
-  const language = classList[0]?.replace('language-', '')
-  const fileName = classList[1]
+  const classList = className ? className.split(":") : [];
+  const language = classList[0]?.replace("language-", "");
+  const fileName = classList[1];
 
-  return (
+  if (fileName !== undefined) {
+    return (
       <div className="pt-6">
-        {fileName && (
-          <div className="rounded-t-lg text-gray-100 bg-slate-700 p-2">
-            <span>{fileName}</span>
-          </div>
-        )}
+        <div>
+          <span className="text-gray-100 text-sm bg-slate-600 p-1 pb-2 -mb-1 rounded-t-md">
+            <code>{fileName}</code>
+          </span>
+        </div>
+        <div className="relative pre-wrapper-has-filename">
+          <SyntaxHighlighter language={language} style={tomorrowNightBlue}>
+            {String(code).replace(/\n$/, "")}
+          </SyntaxHighlighter>
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div>
         <SyntaxHighlighter language={language} style={tomorrowNightBlue}>
-          {String(code).replace(/\n$/, '')}
+          {String(code).replace(/\n$/, "")}
         </SyntaxHighlighter>
       </div>
-  );
+    );
+  }
 };
 
 export default async function BlogPost({ params }: { params: Props }) {
