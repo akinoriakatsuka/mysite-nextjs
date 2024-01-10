@@ -1,5 +1,5 @@
 .article p {
-    @apply mt-6 text-xl leading-8;
+    @apply mt-4 leading-8;
 }
 
 .article h1:first-child {
@@ -24,7 +24,7 @@
 
 .article ul,
 .article ol {
-    @apply mt-6 list-disc ml-8;
+    @apply mt-4 list-disc ml-8;
 }
 
 .article li {
